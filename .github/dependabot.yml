@@ -1,0 +1,119 @@
+version: 2
+updates:
+  # Python dependencies (core package)
+  - package-ecosystem: "pip"
+    directory: "/planning-drawing-validator"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "python"
+    commit-message:
+      prefix: "chore(deps)"
+      include: "scope"
+
+  # Python dependencies (demo app backend)
+  - package-ecosystem: "pip"
+    directory: "/demo-app/backend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "python"
+      - "demo-app"
+    commit-message:
+      prefix: "chore(deps)"
+
+  # Python dependencies (evaluation app backend)
+  - package-ecosystem: "pip"
+    directory: "/evaluation-app/backend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "python"
+      - "evaluation-app"
+    commit-message:
+      prefix: "chore(deps)"
+
+  # NPM dependencies (demo app frontend)
+  - package-ecosystem: "npm"
+    directory: "/demo-app/frontend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "npm"
+      - "demo-app"
+    commit-message:
+      prefix: "chore(deps)"
+    versioning-strategy: increase
+
+  # NPM dependencies (evaluation app frontend)
+  - package-ecosystem: "npm"
+    directory: "/evaluation-app/frontend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "npm"
+      - "evaluation-app"
+    commit-message:
+      prefix: "chore(deps)"
+    versioning-strategy: increase
+
+  # Docker base images
+  - package-ecosystem: "docker"
+    directory: "/demo-app"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "docker"
+    commit-message:
+      prefix: "chore(docker)"
+
+  - package-ecosystem: "docker"
+    directory: "/evaluation-app"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "docker"
+    commit-message:
+      prefix: "chore(docker)"
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "github-actions"
+    commit-message:
+      prefix: "chore(ci)"

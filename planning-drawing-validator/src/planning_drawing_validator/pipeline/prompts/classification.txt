@@ -1,0 +1,14 @@
+# Planning Document Classification
+
+Classify this UK planning document into exactly one category.
+
+## Method
+
+1. Read all visible text (titles, labels, headings)
+2. Analyse visual content - what type of drawing is shown?
+3. Check consistency - if labels contradict visuals, trust the visual evidence
+4. For mixed_plans: must contain 2+ different drawing types (not multiple instances of same type)
+
+## Output
+
+The schema defines all document types with their key discriminators. Select the best match based on visual evidence.

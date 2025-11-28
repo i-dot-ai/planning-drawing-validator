@@ -1,0 +1,78 @@
+# Auto-labeler configuration for PRs
+# See https://github.com/actions/labeler
+
+documentation:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/*.md'
+      - 'docs/**/*'
+      - '**/README*'
+      - 'examples/**/*.md'
+
+core-package:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'planning-drawing-validator/**/*'
+
+demo-app:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'demo-app/**/*'
+
+evaluation-app:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'evaluation-app/**/*'
+
+frontend:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/frontend/**/*'
+      - '**/*.tsx'
+      - '**/*.jsx'
+      - '**/*.css'
+
+backend:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/backend/**/*'
+
+tests:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/tests/**/*'
+      - '**/test_*.py'
+      - '**/*_test.py'
+
+ci-cd:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '.github/**/*'
+      - '**/.github/**/*'
+      - '**/Dockerfile'
+      - '**/docker-compose*.yml'
+
+dependencies:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/pyproject.toml'
+      - '**/requirements*.txt'
+      - '**/package.json'
+      - '**/package-lock.json'
+
+configuration:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/*.toml'
+      - '**/*.yaml'
+      - '**/*.yml'
+      - '**/.env.example'
+      - '**/config.py'
+      - '**/settings.py'
+
+security:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/SECURITY.md'
+      - '**/.secrets.*'
+      - '**/bandit.toml'

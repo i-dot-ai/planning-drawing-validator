@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "review-demo"
+version = "0.1.0"
+description = "Demo app API for planning drawing validation"
+requires-python = ">=3.12"
+
+dependencies = [
+    # Core validation package - installed from parent directory
+    "planning-drawing-validator",
+
+    # API dependencies
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+    "python-multipart>=0.0.6",
+]
+
+[tool.setuptools]
+packages = ["backend"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.21.0",
+    "httpx>=0.24.0",
+    "ruff>=0.1.0",
+    "mypy>=1.5.0",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+extend-exclude = ["frontend/node_modules"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "I",   # isort (import sorting)
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+]
+ignore = [
+    "E501",  # Line too long (handled by formatter)
+    "B008",  # FastAPI uses Depends() in function defaults - this is the standard pattern
+    "B904",  # Exception chaining - good practice but not critical for this project
+]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+ignore_missing_imports = true
+
+# Suppress known framework limitation errors
+# FastAPI route decorators are untyped in strict mode
+[[tool.mypy.overrides]]
+module = "backend.api"
+disable_error_code = ["misc"]
+
+[tool.uv.sources]
+planning-drawing-validator = { path = "../planning-drawing-validator" }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_functions = "test_*"
+addopts = "-v --tb=short"

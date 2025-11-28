@@ -1,0 +1,120 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+*.cover
+.hypothesis/
+
+# Logs
+*.log
+logs/
+
+# Environment variables (keep .env.example)
+.env
+.env.local
+.env.*.local
+creds.json
+*.pem
+*.key
+
+# Frontend (not needed in backend image)
+review/frontend/node_modules/
+review/frontend/build/
+review/frontend/.cache/
+review/frontend/coverage/
+**/node_modules/
+**/dist/
+**/.next/
+
+# Old review directory structure (superseded by new packages)
+# NOTE: Docker builds use new structure:
+#   - planning-drawing-validator/ (core package)
+#   - evaluation-app/ (QA system)
+#   - demo-app/ (demo API)
+review/backend/
+review/evaluation/
+review/production/
+
+# Data files (too large for image, use volumes)
+data/uploads/
+data/test/
+data/*.db
+data/*.sqlite
+reports/
+downloads/
+
+# Documentation (keep essential docs)
+README.md
+!DOCKER.md
+!GROUND_TRUTH_FORMAT.md
+!POSTGRESQL_SETUP.md
+!UI_README.md
+!HITL_FEEDBACK.md
+docs/
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Docker
+docker-compose.yml
+docker-compose.*.yml
+Dockerfile*
+.dockerignore
+
+# Backups
+*.backup
+*.bak
+*.tmp
+
+# Office temp files
+~$*.xlsx
+~$*.docx
+~$*.pptx
+
+# Test scripts and local scripts
+test_*.py
+upload_test_docs.py
+scripts/local_*
+scripts/test_*

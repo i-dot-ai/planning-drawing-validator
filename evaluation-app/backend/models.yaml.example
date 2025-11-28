@@ -1,0 +1,49 @@
+# Model Configuration for Evaluation App
+# Copy this file to models.yaml and customise for your environment.
+#
+# Each model requires:
+#   - id: The model identifier used by your LLM gateway/proxy
+#   - display_name: Human-readable name shown in the UI
+#
+# Optional fields:
+#   - provider: Model provider name (e.g., "OpenAI", "Google", "Anthropic")
+#   - reasoning_effort: Thinking/reasoning level ("none", "low", "medium", "high")
+#                       Only supported by some models (Claude, Gemini with thinking)
+
+default_model: gemini/gemini-2.0-flash
+
+models:
+  # Gemini models
+  - id: gemini/gemini-2.0-flash
+    display_name: Gemini 2.0 Flash
+    provider: Google
+    reasoning_effort: low
+
+  - id: gemini/gemini-1.5-pro
+    display_name: Gemini 1.5 Pro
+    provider: Google
+
+  # OpenAI models
+  - id: openai/gpt-4o
+    display_name: GPT-4o
+    provider: OpenAI
+
+  - id: openai/gpt-4o-mini
+    display_name: GPT-4o Mini
+    provider: OpenAI
+
+  # Anthropic models
+  - id: anthropic/claude-3-5-sonnet
+    display_name: Claude 3.5 Sonnet
+    provider: Anthropic
+
+  - id: anthropic/claude-3-5-haiku
+    display_name: Claude 3.5 Haiku
+    provider: Anthropic
+
+# Note: Model IDs depend on your LLM gateway configuration.
+# Common patterns:
+#   - Direct API: "openai/gpt-4o", "anthropic/claude-3-5-sonnet"
+#   - LiteLLM proxy: "litellm_proxy/model-name"
+#   - Azure: "azure/deployment-name"
+#   - Bedrock: "bedrock/model-id"

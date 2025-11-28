@@ -1,0 +1,105 @@
+name: Feature Request
+description: Suggest a new feature or enhancement
+labels: ["enhancement", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for suggesting a feature! Please provide detailed information to help us understand and evaluate your request.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or Use Case
+      description: Describe the problem you're trying to solve or the use case for this feature
+      placeholder: |
+        As a planning officer, I need to validate multiple documents at once because...
+        OR
+        Currently, there's no way to export validation results, which is problematic when...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the solution you'd like
+      placeholder: |
+        Add a batch validation endpoint that accepts multiple files and returns...
+        OR
+        Provide an export button that downloads results as CSV/JSON...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Describe any alternative solutions or workarounds you've considered
+      placeholder: |
+        I considered using a script to call the API multiple times, but...
+        OR
+        I could manually copy-paste results, but...
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      description: Which component would this feature affect?
+      options:
+        - Core Validation Package
+        - Demo Application Backend
+        - Demo Application Frontend
+        - Evaluation System
+        - Documentation
+        - Infrastructure/DevOps
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority/Impact
+      description: How important is this feature to your workflow?
+      options:
+        - Critical - Blocking my work
+        - High - Important for my workflow
+        - Medium - Would be helpful
+        - Low - Nice to have
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other context, mockups, examples, or references
+      placeholder: |
+        See example from [other tool]
+        Screenshot of desired UI...
+        Link to relevant specification...
+
+  - type: checkboxes
+    id: implementation
+    attributes:
+      label: Implementation
+      options:
+        - label: I am willing to implement this feature and submit a pull request
+          required: false
+        - label: I would need guidance on how to implement this
+          required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      options:
+        - label: I have searched existing issues and discussions to avoid duplicates
+          required: true
+        - label: This feature aligns with the project's goals and scope
+          required: true
+        - label: I have provided sufficient detail for the maintainers to understand the request
+          required: true

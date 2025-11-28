@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "planning-drawing-validator"
+version = "0.1.0"
+description = "Core validation logic for planning drawing validation"
+readme = "README.md"
+requires-python = ">=3.12"
+license = {text = "MIT"}
+
+dependencies = [
+    "i-dot-ai-utilities[litellm] @ git+https://github.com/i-dot-ai/i-dot-ai-utilities.git@f290db11319168add8007710f92f6b59a4e42f8c",
+    "pydantic>=2.0.0",
+    "pydantic-settings>=2.0.0",
+    "pillow>=10.0.0",
+    "pypdf>=4.0.0",
+    "pymupdf>=1.24.0",
+    "python-dotenv>=1.0.0",
+    "typer>=0.9.0",
+    "rich>=13.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.1.0",
+    "ruff>=0.1.0",
+    "mypy>=1.5.0",
+]
+
+langchain = [
+    "langchain-core>=0.1.0",
+    "langchain-openai>=0.0.5",
+    "langchain-anthropic>=0.1.0",
+    "langchain-google-vertexai>=1.0.0",
+]
+
+[project.scripts]
+validate-drawing = "planning_drawing_validator.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+planning_drawing_validator = ["pipeline/prompts/*.txt"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+ignore_missing_imports = true

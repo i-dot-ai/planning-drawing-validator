@@ -1,0 +1,119 @@
+# Python-generated files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+# But allow frontend source lib directories
+!**/src/lib/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+*.cover
+.hypothesis/
+
+# Logs
+*.log
+logs/
+
+# Local env and credentials
+.env
+.env.local
+.env.*.local
+creds.json
+*.pem
+*.key
+
+# Model configuration (local config, not committed)
+models.yaml
+
+# Evaluation data (PDFs, Excel files - never commit)
+**/data/**/*.pdf
+**/data/**/*.xlsx
+**/data/**/*.xls
+**/data/Images*/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Data files (large/sensitive) - now in evaluation-app
+**/data/uploads/
+**/data/test/
+**/data/*.db
+**/data/*.sqlite
+**/reports/
+
+# Temporary/cache files
+*.tmp
+*.temp
+*.cache
+.cache/
+
+# Frontend (new package structure)
+**/node_modules/
+**/build/
+**/.cache/
+**/coverage/
+**/dist/
+**/.next/
+
+# Generated reports - now in evaluation-app
+**/reports/*.md
+**/reports/*_detailed.json
+**/reports/*_assertions.json
+two_stage_evaluation_*.md
+two_stage_evaluation_*_detailed.json
+two_stage_evaluation_*_assertions.json
+
+# Office temp files
+~$*.xlsx
+~$*.docx
+~$*.pptx
+
+# Scripts (may contain sensitive data)
+scripts/local_*
+scripts/test_*
+
+.ruff_cache/
+.pytest_cache/
+.mypy_cache/
+
+.claude/

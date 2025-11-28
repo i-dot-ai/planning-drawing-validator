@@ -1,0 +1,70 @@
+# ============================================================================
+# DEMO SYSTEM - Drawing Validation Demo
+# ============================================================================
+# Demo setup for drawing validation service
+# Includes: Backend API, Frontend UI
+#
+# Architecture:
+#   - planning-drawing-validator: Core validation package
+#   - demo-app: Stateless demo API with frontend
+#
+# Usage: docker-compose up -d
+# Access:
+#   - Frontend: http://localhost:3001 (User interface)
+#   - Backend API: http://localhost:8001 (Direct API access)
+#   - API Docs: http://localhost:8001/docs
+# ============================================================================
+
+services:
+  # Backend API (Demo - Stateless Validator)
+  # Uses: demo-app with planning-drawing-validator core package
+  backend-demo:
+    build:
+      context: ..  # Build from repo root to include both packages
+      dockerfile: demo-app/Dockerfile
+    container_name: review-backend-demo
+    restart: unless-stopped
+    env_file:
+      - ../.env  # Load .env from repo root
+    environment:
+      PYTHONUNBUFFERED: 1
+      GOOGLE_APPLICATION_CREDENTIALS: /app/creds.json
+    volumes:
+      - ../creds.json:/app/creds.json:ro
+      # Mount source code for development (changes reflected immediately)
+      - ../planning-drawing-validator/src/planning_drawing_validator:/app/planning-drawing-validator/src/planning_drawing_validator:ro
+      - ./backend:/app/demo-app/backend:ro
+    ports:
+      - "8001:8001"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8001/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - review-demo-network
+
+  # Frontend UI (Demo - User Interface)
+  frontend-demo:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: review-frontend-demo
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    depends_on:
+      - backend-demo
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - review-demo-network
+
+networks:
+  review-demo-network:
+    driver: bridge

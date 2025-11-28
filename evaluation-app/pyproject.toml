@@ -1,0 +1,130 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "review-evaluation"
+version = "0.1.0"
+description = "Evaluation app for planning drawing validation"
+readme = "README.md"
+requires-python = ">=3.12"
+license = {text = "MIT"}
+
+dependencies = [
+    # Core validator package (from parent directory - installed separately)
+    "planning-drawing-validator",
+
+    # Web framework
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+    "python-multipart>=0.0.6",
+    "websockets>=11.0.0",
+
+    # Database
+    "sqlalchemy>=2.0.0",
+    "psycopg2-binary>=2.9.0",
+    "alembic>=1.12.0",
+
+    # Storage
+    "boto3>=1.28.0",
+
+    # Data processing
+    "pandas>=2.0.0",
+    "openpyxl>=3.1.0",
+
+    # Utilities
+    "python-dotenv>=1.0.0",
+    "pyyaml>=6.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.0.0",
+    "httpx>=0.24.0",
+    "ruff>=0.1.0",
+    "mypy>=1.5.0",
+    "pre-commit>=3.4.0",
+    "factory-boy>=3.3.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["backend*"]
+exclude = ["tests*", "frontend*"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+extend-exclude = ["frontend", "tests", ".venv", "venv"]
+
+[tool.ruff.lint]
+select = [
+  "E",   # pycodestyle errors
+  "F",   # pyflakes
+  "I",   # isort (import sorting)
+  "B",   # flake8-bugbear
+  "UP",  # pyupgrade
+]
+ignore = [
+  "E501",  # Line too long (handled by formatter)
+  "B008",  # FastAPI uses Depends() in function defaults - this is the standard pattern
+  "B904",  # Exception chaining - good practice but not critical for this project
+]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+known-first-party = ["backend"]
+
+[tool.uv.sources]
+planning-drawing-validator = { path = "../planning-drawing-validator" }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_functions = "test_*"
+python_classes = "Test*"
+asyncio_default_fixture_loop_scope = "function"
+addopts = [
+    "-v",
+    "--tb=short",
+    "--strict-markers",
+    "--disable-warnings",
+]
+markers = [
+    "integration: integration tests requiring database and external services",
+    "unit: fast unit tests with no external dependencies",
+]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+ignore_missing_imports = true
+
+# Suppress known framework limitation errors
+# These are not actual type safety issues, but limitations of FastAPI/SQLAlchemy type stubs
+
+# FastAPI routers: Untyped decorators (@router.get, @router.post, etc.)
+[[tool.mypy.overrides]]
+module = "backend.api.routers.*"
+disable_error_code = ["misc"]
+
+# SQLAlchemy models: DeclarativeBase has type Any (inherent to ORM metaclass system)
+[[tool.mypy.overrides]]
+module = "backend.database.models"
+disable_error_code = ["misc"]
+
+[tool.coverage.run]
+source = ["backend"]
+omit = [
+    "*/tests/*",
+    "*/__pycache__/*",
+    "*/venv/*",
+    "*/.venv/*",
+]
+
+[tool.coverage.report]
+precision = 2
+show_missing = true
+skip_covered = false

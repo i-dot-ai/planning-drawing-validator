@@ -1,0 +1,116 @@
+name: Documentation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check-docs:
+    name: Check Documentation
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Check for README files
+        run: |
+          echo "Checking for README files..."
+          test -f README.md || (echo "Missing root README.md" && exit 1)
+          test -f planning-drawing-validator/README.md || (echo "Missing core package README.md" && exit 1)
+          test -f demo-app/README.md || (echo "Missing demo app README.md" && exit 1)
+          test -f evaluation-app/README.md || (echo "Missing evaluation app README.md" && exit 1)
+          echo "✅ All README files present"
+
+      - name: Check for contributing guidelines
+        run: |
+          echo "Checking for contributing guidelines..."
+          test -f CONTRIBUTING.md || (echo "Missing CONTRIBUTING.md" && exit 1)
+          test -f LICENSE || test -f LICENCE || (echo "Missing LICENSE file" && exit 1)
+          test -f SECURITY.md || (echo "Missing SECURITY.md" && exit 1)
+          echo "✅ All required documentation files present"
+
+      - name: Check for example files
+        run: |
+          echo "Checking for example files..."
+          test -d planning-drawing-validator/examples || (echo "Missing core package examples" && exit 1)
+          test -d evaluation-app/examples || (echo "Missing evaluation app examples" && exit 1)
+          echo "✅ Required example directories present"
+
+      - name: Validate Python example syntax
+        run: |
+          echo "Validating Python example syntax..."
+          python -m py_compile planning-drawing-validator/examples/*.py
+          python -m py_compile evaluation-app/examples/*.py
+          echo "✅ All Python examples have valid syntax"
+
+  check-links:
+    name: Check Documentation Links
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Check markdown links
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          use-quiet-mode: 'yes'
+          use-verbose-mode: 'yes'
+          config-file: '.markdown-link-check.json'
+        continue-on-error: true  # Don't fail CI on broken links initially
+
+  build-docs:
+    name: Build Documentation (Future)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Note about future documentation
+        run: |
+          echo "📝 Future enhancement: Set up Sphinx or MkDocs for auto-generated API documentation"
+          echo "Current documentation is in README files and examples/"
+          echo "For now, we'll just verify the markdown files exist and are valid"
+
+  check-docstrings:
+    name: Check Docstring Coverage
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install pydocstyle
+        run: pip install pydocstyle
+
+      - name: Check docstrings (core package)
+        run: |
+          cd planning-drawing-validator
+          pydocstyle src/planning_drawing_validator --convention=google || true
+        continue-on-error: true
+
+      - name: Check docstrings (demo app)
+        run: |
+          cd demo-app
+          pydocstyle backend --convention=google || true
+        continue-on-error: true
+
+      - name: Check docstrings (evaluation app)
+        run: |
+          cd evaluation-app
+          pydocstyle backend --convention=google || true
+        continue-on-error: true

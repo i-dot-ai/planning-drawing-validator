@@ -1,0 +1,116 @@
+name: Bug Report
+description: Report a bug or unexpected behaviour
+labels: ["bug", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting a bug! Please fill out the information below to help us diagnose and fix the issue.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is
+      placeholder: When I upload a floor plan, the validation fails with...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Minimal steps to reproduce the behaviour
+      placeholder: |
+        1. Start the demo application with `docker-compose up`
+        2. Upload file 'example.pdf'
+        3. Click 'Validate'
+        4. Observe error message...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behaviour
+      description: What you expected to happen
+      placeholder: The document should be classified as a floor plan and validated successfully
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behaviour
+      description: What actually happened
+      placeholder: An error occurred, validation failed with...
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant Logs
+      description: Any error messages or logs (please wrap in ``` blocks)
+      placeholder: |
+        ```
+        ERROR: Validation failed: ValueError: not enough values to unpack
+        ```
+      render: shell
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: What version of the software are you using?
+      placeholder: e.g. v1.2.3 or commit hash
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      description: Which component is affected?
+      options:
+        - Core Validation Package
+        - Demo Application Backend
+        - Demo Application Frontend
+        - Evaluation System
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Your development/production environment
+      placeholder: |
+        - OS: Ubuntu 22.04
+        - Python: 3.12.0
+        - Node.js: 20.10.0
+        - Docker: 24.0.6
+        - Browser: Chrome 120.0 (if frontend issue)
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other context, screenshots, or information about the problem
+      placeholder: This started happening after upgrading...
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      options:
+        - label: I have searched existing issues to avoid duplicates
+          required: true
+        - label: I have provided all requested information above
+          required: true
+        - label: I am willing to help test a fix if needed
+          required: false

@@ -1,0 +1,56 @@
+# UK Planning Document Validation
+
+Validate this document against the schema requirements.
+
+## Method
+
+1. Scan systematically - check all corners, margins, title block, legend
+2. Verify visually - if you cannot clearly see an element, it is not present
+3. Cross-check - filename vs title vs visual content must be consistent
+4. Do not infer or hallucinate - only confirm what you can see
+
+## ValidationCheck Fields
+
+For each check defined in the schema:
+
+**status**: COMPLIANT (meets all requirements) | PRESENT (partial) | MISSING | UNCLEAR | NOT_APPLICABLE
+
+**value**: Extract actual value found (e.g., "1:100", "PROPOSED") or null
+
+**evidence**: Specific observable details - quote text, describe locations, explain what's missing (min 5 chars)
+
+**critical**: Predetermined by schema. Any critical check failing = INVALID document.
+
+## CRITICAL: Validity Decision Rule
+
+**BEFORE writing validity_assessment, you MUST:**
+1. List all checks where critical=true
+2. Check if ANY of them have status MISSING, PRESENT, or UNCLEAR
+3. If YES → validity_assessment MUST be "INVALID"
+4. ONLY if ALL critical checks are COMPLIANT or NOT_APPLICABLE → validity_assessment can be "VALID"
+
+**THIS IS MANDATORY. A single critical check with status MISSING or PRESENT = INVALID document. No exceptions.**
+
+**PRESENT ≠ COMPLIANT.** A critical check with status PRESENT is a FAILURE because it only partially meets requirements. Do NOT say "all checks passed" when any critical check has status PRESENT.
+
+## Output Fields
+
+**validity_assessment**: "VALID" or "INVALID" (apply decision rule above strictly)
+
+**overall_confidence**: Use these specific triggers:
+
+- **HIGH**: All checks clear, visual elements unambiguous, labels match content exactly
+- **MEDIUM**: Use when ANY of these apply:
+  - Visual element partially obscured or at edge of image
+  - Label/content match is plausible but not definitive
+  - Address present but completeness uncertain
+  - Red line visible but extent to full site boundary unclear
+  - North arrow-like symbol present but not standard format
+- **LOW**: Use when ANY of these apply:
+  - Key visual elements unclear or ambiguous
+  - Cannot definitively verify label matches actual content
+  - Multiple interpretations possible
+
+**CALIBRATION RULE**: If you marked any check as PRESENT or UNCLEAR, confidence should be MEDIUM at most. If you are uncertain about ANY visual verification, use MEDIUM or LOW.
+
+**assessment_reasoning**: In your reasoning, explicitly state each critical check's status. Example: "Critical checks: scale=COMPLIANT, site_identification=PRESENT (FAIL), north_arrow=COMPLIANT. Because site_identification is PRESENT (not COMPLIANT), document is INVALID."

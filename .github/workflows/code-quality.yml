@@ -1,0 +1,102 @@
+name: Code Quality
+
+# IMPORTANT: Keep tool versions in sync with .pre-commit-config.yaml
+# Current versions:
+#   - ruff: 0.14.6
+#   - bandit: 1.9.2
+#   - detect-secrets: 1.5.0
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  RUFF_VERSION: "0.14.6"
+
+jobs:
+  lint-and-format:
+    name: Linting and Formatting
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install UV
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install ruff (pinned version)
+        run: uv pip install --system ruff==${{ env.RUFF_VERSION }}
+
+      - name: Run ruff format check
+        run: ruff format --check .
+
+      - name: Run ruff linting
+        run: ruff check --config ruff.toml .
+
+  type-check:
+    name: Type Checking with MyPy
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install UV
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run mypy verification script
+        run: |
+          chmod +x verify-mypy.sh
+          ./verify-mypy.sh
+
+  frontend-quality:
+    name: Frontend Code Quality (${{ matrix.app }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [evaluation-app, demo-app]
+    defaults:
+      run:
+        working-directory: ${{ matrix.app }}/frontend
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: ${{ matrix.app }}/frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Check TypeScript
+        run: npm run type-check
+
+      - name: Check formatting with Prettier
+        run: npm run format:check

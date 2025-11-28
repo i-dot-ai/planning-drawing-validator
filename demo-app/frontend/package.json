@@ -1,0 +1,47 @@
+{
+  "name": "planning-validator",
+  "version": "1.0.0",
+  "description": "Planning Document Validator - Validate your drawings before submission",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@chakra-ui/react": "^3.30.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "axios": "^1.6.2",
+    "framer-motion": "^12.23.24",
+    "lucide-react": "^0.555.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-markdown": "^10.1.0",
+    "react-router-dom": "^7.9.4",
+    "web-vitals": "^5.1.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9.29.0",
+    "eslint-config-prettier": "^10.1.8",
+    "postcss": "^8.5.6",
+    "prettier": "^3.7.1",
+    "tailwindcss": "^3.4.18",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.48.0",
+    "vite": "^7.2.4"
+  },
+  "scripts": {
+    "dev": "vite",
+    "start": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,css}\"",
+    "type-check": "tsc --noEmit"
+  }
+}

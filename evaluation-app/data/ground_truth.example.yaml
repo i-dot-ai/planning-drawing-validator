@@ -1,0 +1,15 @@
+- filename: drawing-001.pdf
+  validity: VALID
+  reason: null
+
+- filename: drawing-002.pdf
+  validity: INVALID
+  reason: Missing required scale information
+
+- filename: drawing-003.pdf
+  validity: VALID
+  reason: null
+
+- filename: drawing-004.pdf
+  validity: INVALID
+  reason: Outdated revision

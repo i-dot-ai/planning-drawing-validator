@@ -1,0 +1,107 @@
+Planning Drawing Validator
+Copyright (c) 2025 UK Government Incubator for AI
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+================================================================================
+THIRD-PARTY SOFTWARE NOTICES AND INFORMATION
+================================================================================
+
+This software incorporates components from the following third-party projects:
+
+--------------------------------------------------------------------------------
+PyMuPDF (pymupdf)
+--------------------------------------------------------------------------------
+License: GNU Affero General Public License v3.0 (AGPL-3.0) OR Commercial License
+Website: https://pymupdf.readthedocs.io/
+Source: https://github.com/pymupdf/PyMuPDF
+
+PyMuPDF is used for PDF to image conversion functionality. When used in this
+open-source project, PyMuPDF is used under its AGPL-3.0 license terms.
+
+Note: If you are using this software in a proprietary/commercial context where
+AGPL-3.0 compliance is not feasible, you may need to obtain a commercial license
+from Artifex Software, Inc., or replace PyMuPDF with an alternative library.
+
+--------------------------------------------------------------------------------
+i-dot-ai-utilities
+--------------------------------------------------------------------------------
+License: MIT
+Source: https://github.com/i-dot-ai/i-dot-ai-utilities
+
+--------------------------------------------------------------------------------
+FastAPI
+--------------------------------------------------------------------------------
+License: MIT
+Website: https://fastapi.tiangolo.com/
+Source: https://github.com/tiangolo/fastapi
+
+--------------------------------------------------------------------------------
+SQLAlchemy
+--------------------------------------------------------------------------------
+License: MIT
+Website: https://www.sqlalchemy.org/
+Source: https://github.com/sqlalchemy/sqlalchemy
+
+--------------------------------------------------------------------------------
+Pydantic
+--------------------------------------------------------------------------------
+License: MIT
+Website: https://docs.pydantic.dev/
+Source: https://github.com/pydantic/pydantic
+
+--------------------------------------------------------------------------------
+React
+--------------------------------------------------------------------------------
+License: MIT
+Website: https://react.dev/
+Source: https://github.com/facebook/react
+
+--------------------------------------------------------------------------------
+Chakra UI
+--------------------------------------------------------------------------------
+License: MIT
+Website: https://chakra-ui.com/
+Source: https://github.com/chakra-ui/chakra-ui
+
+--------------------------------------------------------------------------------
+LiteLLM
+--------------------------------------------------------------------------------
+License: MIT
+Website: https://docs.litellm.ai/
+Source: https://github.com/BerriAI/litellm
+
+--------------------------------------------------------------------------------
+boto3 (AWS SDK for Python)
+--------------------------------------------------------------------------------
+License: Apache-2.0
+Website: https://boto3.amazonaws.com/
+Source: https://github.com/boto/boto3
+
+--------------------------------------------------------------------------------
+pandas
+--------------------------------------------------------------------------------
+License: BSD-3-Clause
+Website: https://pandas.pydata.org/
+Source: https://github.com/pandas-dev/pandas
+
+--------------------------------------------------------------------------------
+Pillow
+--------------------------------------------------------------------------------
+License: HPND (Historical Permission Notice and Disclaimer)
+Website: https://python-pillow.org/
+Source: https://github.com/python-pillow/Pillow
+
+================================================================================
+ADDITIONAL NOTES
+================================================================================
+
+For a complete list of all transitive dependencies and their licenses, you can
+generate a report using:
+
+  Python:  pip-licenses --format=markdown
+  Node.js: npx license-checker --summary
+
+All other dependencies not explicitly listed above are used under permissive
+open-source licenses (MIT, BSD, Apache-2.0, ISC) that are compatible with
+this project's MIT license.

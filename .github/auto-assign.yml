@@ -1,0 +1,39 @@
+# Auto-assign reviewers to PRs
+# See https://github.com/kentaro-m/auto-assign-action
+
+# Add reviewers to pull requests
+addReviewers: true
+
+# Add assignees to pull requests
+addAssignees: false
+
+# A list of reviewers to be added to pull requests (GitHub user name)
+reviewers:
+  - benjaminr
+  # Add more reviewers as the team grows
+
+# Number of reviewers to be added to pull requests
+numberOfReviewers: 1
+
+# Number of assignees to be added to pull requests
+numberOfAssignees: 0
+
+# Filter pull requests by labels
+filterLabels:
+  include:
+    # Only assign reviewers to PRs with these labels
+    # - ready-for-review
+  exclude:
+    # Don't assign reviewers to PRs with these labels
+    - work-in-progress
+    - WIP
+    - draft
+
+# Skip draft pull requests
+skipDraftPR: true
+
+# Use review groups feature
+useReviewGroups: false
+
+# Use assignee groups feature
+useAssigneeGroups: false

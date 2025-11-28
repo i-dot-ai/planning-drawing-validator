@@ -1,0 +1,9 @@
+# Ruff configuration for the review project
+# Only configure what we want to ignore, use ruff defaults for everything else
+
+[lint]
+ignore = [
+    "B008",  # FastAPI uses Depends() in function defaults - this is the standard pattern
+    "B904",  # Exception chaining - good practice but not critical for this project
+    "E402",  # Module level imports after __future__ and module docstrings - this is standard Python
+]

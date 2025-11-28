@@ -1,0 +1,132 @@
+name: Security
+
+# IMPORTANT: Keep tool versions in sync with .pre-commit-config.yaml
+# Current versions:
+#   - detect-secrets: 1.5.0
+#   - bandit: 1.9.2
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    # Run weekly on Monday at 9am UTC
+    - cron: '0 9 * * 1'
+
+env:
+  DETECT_SECRETS_VERSION: "1.5.0"
+  BANDIT_VERSION: "1.9.2"
+
+jobs:
+  secret-scanning:
+    name: Secret Detection
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0  # Full history for comprehensive scanning
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install UV
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+
+      - name: Install detect-secrets (pinned version)
+        run: uv pip install --system detect-secrets==${{ env.DETECT_SECRETS_VERSION }}
+
+      - name: Run detect-secrets scan
+        run: detect-secrets scan --baseline .secrets.baseline
+
+      - name: Audit secrets baseline
+        if: github.event_name == 'schedule'
+        run: detect-secrets audit .secrets.baseline
+
+  python-security:
+    name: Python Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install UV
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+
+      - name: Install security tools (pinned versions)
+        run: uv pip install --system bandit==${{ env.BANDIT_VERSION }} safety
+
+      - name: Run Bandit security scan
+        run: bandit -r planning-drawing-validator/src/ demo-app/backend/ evaluation-app/backend/ -ll -f json -o bandit-report.json
+        continue-on-error: true
+
+      - name: Upload Bandit report
+        uses: actions/upload-artifact@v5
+        if: always()
+        with:
+          name: bandit-security-report
+          path: bandit-report.json
+
+      - name: Check dependency vulnerabilities with Safety
+        run: |
+          # Install all dependencies first
+          uv pip install --system -e "planning-drawing-validator[dev]"
+          uv pip install --system -e "demo-app[dev]"
+          # Run safety check
+          safety check --json --output safety-report.json
+        continue-on-error: true
+
+      - name: Upload Safety report
+        uses: actions/upload-artifact@v5
+        if: always()
+        with:
+          name: safety-vulnerability-report
+          path: safety-report.json
+
+  npm-audit:
+    name: NPM Security Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+
+      - name: Run npm audit (demo frontend)
+        working-directory: ./demo-app/frontend
+        run: |
+          npm audit --audit-level=moderate --json > npm-audit-demo.json
+        continue-on-error: true
+
+      - name: Run npm audit (evaluation frontend)
+        working-directory: ./evaluation-app/frontend
+        run: |
+          npm audit --audit-level=moderate --json > npm-audit-eval.json
+        continue-on-error: true
+
+      - name: Upload NPM audit reports
+        uses: actions/upload-artifact@v5
+        if: always()
+        with:
+          name: npm-audit-reports
+          path: |
+            demo-app/frontend/npm-audit-demo.json
+            evaluation-app/frontend/npm-audit-eval.json

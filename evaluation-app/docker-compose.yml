@@ -1,0 +1,125 @@
+# ============================================================================
+# EVALUATION SYSTEM
+# ============================================================================
+# Full stack for testing validator performance against ground truth datasets
+# Includes: Database, Object Storage, Backend API, Frontend UI
+#
+# Usage: docker-compose up -d
+# Access: http://localhost:3000 (Frontend), http://localhost:8000 (API)
+# ============================================================================
+
+services:
+  # PostgreSQL Database (Evaluation)
+  # Stores: Run history, ground truth data, evaluation results
+  db-evaluation:
+    image: postgres:14-alpine
+    container_name: review-db-evaluation
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: review_dev
+      POSTGRES_USER: review_user
+      POSTGRES_PASSWORD: review_password  # pragma: allowlist secret
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_evaluation_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U review_user -d review_dev"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - review-evaluation-network
+
+  # MinIO Object Storage (Evaluation)
+  # Stores: Test documents, ground truth files
+  minio-evaluation:
+    image: minio/minio:latest
+    container_name: review-minio-evaluation
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin123  # pragma: allowlist secret
+    volumes:
+      - minio_evaluation_data:/data
+    ports:
+      - "9000:9000"  # API
+      - "9001:9001"  # Console
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - review-evaluation-network
+
+  # Backend API (Evaluation System)
+  # Uses: evaluation-app with planning-drawing-validator core package
+  # Provides: Evaluation runs, ground truth management, performance metrics
+  backend-evaluation:
+    build:
+      context: ..
+      dockerfile: evaluation-app/Dockerfile
+    container_name: review-backend-evaluation
+    restart: unless-stopped
+    env_file:
+      - ../.env
+    environment:
+      DATABASE_URL: postgresql://review_user:review_password@db-evaluation:5432/review_dev  # pragma: allowlist secret
+      PYTHONUNBUFFERED: 1
+      GOOGLE_APPLICATION_CREDENTIALS: /app/creds.json
+      S3_ENDPOINT: http://minio-evaluation:9000
+      S3_ACCESS_KEY: minioadmin
+      S3_SECRET_KEY: minioadmin123
+      S3_BUCKET: review-documents
+      S3_SECURE: "false"
+    volumes:
+      - ../creds.json:/app/creds.json:ro
+    ports:
+      - "8000:8000"
+    depends_on:
+      db-evaluation:
+        condition: service_healthy
+      minio-evaluation:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/api/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - review-evaluation-network
+
+  # Frontend UI (Evaluation Dashboard)
+  # Provides: Web interface for managing evaluations, viewing results
+  frontend-evaluation:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: review-frontend-evaluation
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend-evaluation
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - review-evaluation-network
+
+volumes:
+  postgres_evaluation_data:
+    driver: local
+  minio_evaluation_data:
+    driver: local
+
+networks:
+  review-evaluation-network:
+    driver: bridge
