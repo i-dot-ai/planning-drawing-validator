@@ -12,7 +12,7 @@
     "framer-motion": "^12.23.24",
     "lucide-react": "^0.555.0",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0",
+    "react-dom": "^19.2.1",
     "react-markdown": "^10.1.0",
     "react-router-dom": "^7.9.4",
     "web-vitals": "^5.1.0"
