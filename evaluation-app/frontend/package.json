@@ -31,7 +31,7 @@
     "prettier": "^3.7.1",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.48.0",
-    "vite": "^7.2.4"
+    "vite": "^7.3.0"
   },
   "scripts": {
     "dev": "vite",
