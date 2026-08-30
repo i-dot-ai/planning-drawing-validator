@@ -75,7 +75,7 @@ jobs:
         continue-on-error: true
 
       - name: Upload Bandit report
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         if: always()
         with:
           name: bandit-security-report
@@ -91,7 +91,7 @@ jobs:
         continue-on-error: true
 
       - name: Upload Safety report
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         if: always()
         with:
           name: safety-vulnerability-report
@@ -123,7 +123,7 @@ jobs:
         continue-on-error: true
 
       - name: Upload NPM audit reports
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         if: always()
         with:
           name: npm-audit-reports
